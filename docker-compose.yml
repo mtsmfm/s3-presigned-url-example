@@ -1,0 +1,21 @@
+services:
+  app:
+    image: node
+    working_dir: /app
+    volumes:
+      - .:/app
+    depends_on:
+      - s3mock
+
+  s3mock:
+    image: adobe/s3mock
+    restart: unless-stopped
+    volumes:
+      - s3mock-data:/data
+    environment:
+      initialBuckets: s3-local
+      root: /data
+      retainFilesOnExit: "true"
+
+volumes:
+  s3mock-data:
